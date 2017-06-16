@@ -95,7 +95,9 @@ def main():
                 if firstSelection == None: # the current box was the first box clicked
                     firstSelection = (boxx, boxy)
                 else: # the current box was the second box clicked
+
                     # Check if there is a match between the two icons.
+                    ## FIXE THIS STUFF FOR IMAGES
                     icon1shape, icon1color = getShapeAndColor(mainBoard, firstSelection[0], firstSelection[1])
                     icon2shape, icon2color = getShapeAndColor(mainBoard, boxx, boxy)
 
@@ -206,6 +208,11 @@ def drawIcon(shape, color, boxx, boxy):
 
 
 def getShapeAndColor(board, boxx, boxy):
+    """
+    This the one to change,
+    build for shapes, need to adapt this
+    stuff for images
+    """
     # shape value for x, y spot is stored in board[x][y][0]
     # color value for x, y spot is stored in board[x][y][1]
     return board[boxx][boxy][0], board[boxx][boxy][1]
