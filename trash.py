@@ -35,7 +35,26 @@ polynucleaire_neutrophile_sprite = pygame.image.load('sprites/polynucleaire_neut
 polynucleaire_neutrophile_sprite = pygame.transform.scale(polynucleaire_neutrophile_sprite, (30, 30))
 monocytes_sprite = pygame.image.load('sprites/monocytes.png')
 monocytes_sprite = pygame.transform.scale(monocytes_sprite, (30, 30))
-
+AC1_sprite = pygame.image.load('sprites/AC1.png')
+AC1_sprite = pygame.transform.scale(AC1_sprite, (30, 30))
+AC2_sprite = pygame.image.load('sprites/AC2.png')
+AC2_sprite = pygame.transform.scale(AC2_sprite, (30, 30))
+AC3_sprite = pygame.image.load('sprites/AC3.png')
+AC3_sprite = pygame.transform.scale(AC3_sprite, (30, 30))
+AC4_sprite = pygame.image.load('sprites/AC4.png')
+AC4_sprite = pygame.transform.scale(AC4_sprite, (30, 30))
+megacaryoblaste_sprite = pygame.image.load('sprites/Megacaryoblaste.png')
+megacaryoblaste_sprite = pygame.transform.scale(megacaryoblaste_sprite, (30, 30))
+megacaryocyte_sprite = pygame.image.load('sprites/Megacaryocyte.png')
+megacaryocyte_sprite = pygame.transform.scale(megacaryocyte_sprite, (30, 30))
+macrophage_sprite = pygame.image.load('sprites/Macrophage.png')
+macrophage_sprite = pygame.transform.scale(macrophage_sprite, (30, 30))
+monoblaste_sprite = pygame.image.load('sprites/Monoblaste.png')
+monoblaste_sprite = pygame.transform.scale(monoblaste_sprite, (30, 30))
+plaquette_sprite = pygame.image.load('sprites/Plaquette.png')
+plaquette_sprite = pygame.transform.scale(plaquette_sprite, (30, 30))
+erythroblaste_acidophile_sprite = pygame.image.load('sprites/Erythroblaste_acidophile.png')
+erythroblaste_acidophile_sprite = pygame.transform.scale(erythroblaste_acidophile_sprite, (30, 30))
 
 
 #            R    G    B
@@ -61,8 +80,29 @@ DIAMOND = 'diamond'
 LINES = 'lines'
 OVAL = 'oval'
 
+## Shape manager
+proerythroblaste = 'proerythroblaste'
+lymphocyte_B = 'lymphocyte_B'
+erythrocyte = 'erythrocyte'
+erythroblaste_polychromatophile = 'erythroblaste_polychromatophile'
+polynucleaire_neutrophile = 'polynucleaire_neutrophile'
+monocytes = 'monocytes'
+AC1 = 'AC1'
+AC2 = 'AC2'
+AC3 = 'AC3'
+AC4 = 'AC4'
+megacaryoblaste = 'megacaryoblaste'
+megacaryocyte = 'megacaryocyte'
+macrophage = 'macrophage'
+monoblaste = 'monoblaste'
+plaquette = 'plaquette'
+erythroblaste_acidophile = 'erythroblaste_acidophile'
+
+
+
 ALLCOLORS = (RED, GREEN, BLUE, YELLOW, ORANGE, PURPLE, CYAN)
-ALLSHAPES = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
+ALLSHAPES_ORIGINAL = (DONUT, SQUARE, DIAMOND, LINES, OVAL)
+ALLSHAPES = (proerythroblaste, lymphocyte_B, erythrocyte, erythroblaste_polychromatophile, polynucleaire_neutrophile, monocytes, AC1, AC2, AC3, AC4, megacaryoblaste, megacaryocyte, macrophage, monoblaste, plaquette, erythroblaste_acidophile)
 assert len(ALLCOLORS) * len(ALLSHAPES) * 2 >= BOARDWIDTH * BOARDHEIGHT, "Board is too big for the number of shapes/colors defined."
 
 def main():
@@ -221,6 +261,7 @@ def drawIcon_original(shape, color, boxx, boxy):
         DISPLAYSURF.blit(proerythroblaste_sprite, (left, top + quarter, BOXSIZE, half))
 
 
+
 def drawIcon(shape, color, boxx, boxy):
     """
     Test version
@@ -231,16 +272,38 @@ def drawIcon(shape, color, boxx, boxy):
 
     left, top = leftTopCoordsOfBox(boxx, boxy) # get pixel coords from board coords
     # Draw the shapes
-    if shape == DONUT:
+    if shape == lymphocyte_B:
         DISPLAYSURF.blit(lymphocyte_B_sprite, (left, top + quarter, BOXSIZE, half))
-    elif shape == SQUARE:
+    elif shape == erythrocyte:
         DISPLAYSURF.blit(erythrocyte_sprite, (left, top + quarter, BOXSIZE, half))
-    elif shape == DIAMOND:
+    elif shape == polynucleaire_neutrophile:
         DISPLAYSURF.blit(polynucleaire_neutrophile_sprite, (left, top + quarter, BOXSIZE, half))
-    elif shape == LINES:
+    elif shape == monocytes:
         DISPLAYSURF.blit(monocytes_sprite, (left, top + quarter, BOXSIZE, half))
-    elif shape == OVAL:
+    elif shape == proerythroblaste:
         DISPLAYSURF.blit(proerythroblaste_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == erythroblaste_polychromatophile:
+        DISPLAYSURF.blit(erythroblaste_polychromatophile_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == AC1:
+        DISPLAYSURF.blit(AC1_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == AC2:
+        DISPLAYSURF.blit(AC2_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == AC3:
+        DISPLAYSURF.blit(AC3_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == AC4:
+        DISPLAYSURF.blit(AC4_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == megacaryoblaste:
+        DISPLAYSURF.blit(megacaryoblaste_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == megacaryocyte:
+        DISPLAYSURF.blit(megacaryocyte_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == macrophage:
+        DISPLAYSURF.blit(macrophage_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == monoblaste:
+        DISPLAYSURF.blit(monoblaste_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == plaquette:
+        DISPLAYSURF.blit(plaquette_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == erythroblaste_acidophile:
+        DISPLAYSURF.blit(erythroblaste_acidophile_sprite, (left, top + quarter, BOXSIZE, half))
 
 
 def getShapeAndColor(board, boxx, boxy):
