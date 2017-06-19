@@ -2,6 +2,9 @@
 # By Al Sweigart al@inventwithpython.com
 # http://inventwithpython.com/pygame
 # Released under a "Simplified BSD" license
+## Adapated for immunology presentation
+## play with sprite, no more drawing
+## TODO : drop the color gestion
 
 import random, pygame, sys
 from pygame.locals import *
@@ -12,15 +15,27 @@ WINDOWHEIGHT = 480 # size of windows' height in pixels
 REVEALSPEED = 8 # speed boxes' sliding reveals and covers
 BOXSIZE = 40 # size of box height & width in pixels
 GAPSIZE = 10 # size of gap between boxes in pixels
-BOARDWIDTH = 10 # number of columns of icons
-BOARDHEIGHT = 7 # number of rows of icons
+BOARDWIDTH = 4 # number of columns of icons
+BOARDHEIGHT = 4 # number of rows of icons
 assert (BOARDWIDTH * BOARDHEIGHT) % 2 == 0, 'Board needs to have an even number of boxes for pairs of matches.'
 XMARGIN = int((WINDOWWIDTH - (BOARDWIDTH * (BOXSIZE + GAPSIZE))) / 2)
 YMARGIN = int((WINDOWHEIGHT - (BOARDHEIGHT * (BOXSIZE + GAPSIZE))) / 2)
 
 
-catImg = pygame.image.load('sprites_1.jpg')
-catImg = pygame.transform.scale(catImg, (30, 30))
+## Load Sprites
+proerythroblaste_sprite = pygame.image.load('sprites/Proerythroblaste.png')
+proerythroblaste_sprite = pygame.transform.scale(proerythroblaste_sprite, (30, 30))
+lymphocyte_B_sprite = pygame.image.load('sprites/Lymphocyte_B.png')
+lymphocyte_B_sprite = pygame.transform.scale(lymphocyte_B_sprite, (30, 30))
+erythrocyte_sprite = pygame.image.load('sprites/Erythrocyte.png')
+erythrocyte_sprite = pygame.transform.scale(erythrocyte_sprite, (30, 30))
+erythroblaste_polychromatophile_sprite = pygame.image.load('sprites/Erythroblaste_polychromatophile.png')
+erythroblaste_polychromatophile_sprite = pygame.transform.scale(erythroblaste_polychromatophile_sprite, (30, 30))
+polynucleaire_neutrophile_sprite = pygame.image.load('sprites/polynucleaire_neutrophile.png')
+polynucleaire_neutrophile_sprite = pygame.transform.scale(polynucleaire_neutrophile_sprite, (30, 30))
+monocytes_sprite = pygame.image.load('sprites/monocytes.png')
+monocytes_sprite = pygame.transform.scale(monocytes_sprite, (30, 30))
+
 
 
 #            R    G    B
@@ -58,7 +73,7 @@ def main():
 
     mousex = 0 # used to store x coordinate of mouse event
     mousey = 0 # used to store y coordinate of mouse event
-    pygame.display.set_caption('Memory Game')
+    pygame.display.set_caption('Memory Game, Immunology Edition')
 
     mainBoard = getRandomizedBoard()
     revealedBoxes = generateRevealedBoxesData(False)
@@ -96,12 +111,11 @@ def main():
                     firstSelection = (boxx, boxy)
                 else: # the current box was the second box clicked
 
-                    # Check if there is a match between the two icons.
-                    ## FIXE THIS STUFF FOR IMAGES
-                    icon1shape, icon1color = getShapeAndColor(mainBoard, firstSelection[0], firstSelection[1])
-                    icon2shape, icon2color = getShapeAndColor(mainBoard, boxx, boxy)
+                    ## Check if there is a match between the two icons.
+                    icon1shape = getShape(mainBoard, firstSelection[0], firstSelection[1])
+                    icon2shape = getShape(mainBoard, boxx, boxy)
 
-                    if icon1shape != icon2shape or icon1color != icon2color:
+                    if icon1shape != icon2shape:
                         # Icons don't match. Re-cover up both selections.
                         pygame.time.wait(1000) # 1000 milliseconds = 1 sec
                         coverBoxesAnimation(mainBoard, [(firstSelection[0], firstSelection[1]), (boxx, boxy)])
@@ -185,7 +199,7 @@ def getBoxAtPixel(x, y):
     return (None, None)
 
 
-def drawIcon(shape, color, boxx, boxy):
+def drawIcon_original(shape, color, boxx, boxy):
     quarter = int(BOXSIZE * 0.25) # syntactic sugar
     half =    int(BOXSIZE * 0.5)  # syntactic sugar
 
@@ -204,7 +218,29 @@ def drawIcon(shape, color, boxx, boxy):
             pygame.draw.line(DISPLAYSURF, color, (left + i, top + BOXSIZE - 1), (left + BOXSIZE - 1, top + i))
     elif shape == OVAL:
         #pygame.draw.ellipse(DISPLAYSURF, color, (left, top + quarter, BOXSIZE, half))
-        DISPLAYSURF.blit(catImg, (left, top + quarter, BOXSIZE, half))
+        DISPLAYSURF.blit(proerythroblaste_sprite, (left, top + quarter, BOXSIZE, half))
+
+
+def drawIcon(shape, color, boxx, boxy):
+    """
+    Test version
+    - color is useless, have to remove it in the end
+    """
+    quarter = int(BOXSIZE * 0.25) # syntactic sugar
+    half =    int(BOXSIZE * 0.5)  # syntactic sugar
+
+    left, top = leftTopCoordsOfBox(boxx, boxy) # get pixel coords from board coords
+    # Draw the shapes
+    if shape == DONUT:
+        DISPLAYSURF.blit(lymphocyte_B_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == SQUARE:
+        DISPLAYSURF.blit(erythrocyte_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == DIAMOND:
+        DISPLAYSURF.blit(polynucleaire_neutrophile_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == LINES:
+        DISPLAYSURF.blit(monocytes_sprite, (left, top + quarter, BOXSIZE, half))
+    elif shape == OVAL:
+        DISPLAYSURF.blit(proerythroblaste_sprite, (left, top + quarter, BOXSIZE, half))
 
 
 def getShapeAndColor(board, boxx, boxy):
@@ -216,6 +252,15 @@ def getShapeAndColor(board, boxx, boxy):
     # shape value for x, y spot is stored in board[x][y][0]
     # color value for x, y spot is stored in board[x][y][1]
     return board[boxx][boxy][0], board[boxx][boxy][1]
+
+
+def getShape(board, boxx, boxy):
+    """
+    Test version of getShapeAndColor, drop the color
+    """
+    # shape value for x, y spot is stored in board[x][y][0]
+    # color value for x, y spot is stored in board[x][y][1]
+    return board[boxx][boxy][0]
 
 
 def drawBoxCovers(board, boxes, coverage):
