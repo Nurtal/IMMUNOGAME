@@ -1,48 +1,55 @@
 import pygame, sys
 from pygame.locals import *
 
+# run.py
 pygame.init()
 
-FPS = 30 # frames per second setting
-fpsClock = pygame.time.Clock()
+# Creer une fenetre de jeu
+# set_mode(resolution=(width, height), flags=0, depth=0)
+screen = pygame.display.set_mode((640, 480), 0, 32)
 
-# set up the window
-DISPLAYSURF = pygame.display.set_mode((400, 300), 0, 32)
-pygame.display.set_caption('Animation')
+# Couleur de la fenetre
+bg_color = (0, 0, 0)
 
-WHITE = (255, 255, 255)
-catImg = pygame.image.load('sprites_1.jpg')
-catx = 10
-caty = 10
-direction = 'right'
+# Par defaut, la fenetre sera Game Menu
+pygame.display.set_caption('Game Menu')
+menu_selected = True
 
-while True: # the main game loop
-    DISPLAYSURF.fill(WHITE)
+# Initialisation des vues
+menu_items = ('Start', 'Settings', 'Quit')
+gm = GameMenu(screen, menu_items)
+gs = GameSettings(screen)
+# l ecran Game sera cree dynamiquement pour permettre le redemarrage au debut
+g = None
+# Par defaut, la boucle tourne a linfini.
+mainloop = True
 
-    if direction == 'right':
-        catx += 5
-        if catx == 280:
-            direction = 'down'
-    elif direction == 'down':
-        caty += 5
-        if caty == 220:
-            direction = 'left'
-    elif direction == 'left':
-        catx -= 5
-        if catx == 10:
-            direction = 'up'
-    elif direction == 'up':
-        caty -= 5
-        if caty == 10:
-            direction = 'right'
+while mainloop:
 
-    #DISPLAYSURF.blit(catImg, (catx, caty))
-    DISPLAYSURF.blit(catImg, (0, 0))
+    # Rafraichit l'ecran en noir a chaque boucle
+    screen.fill(bg_color)
 
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+    # Demarre l'ecran menu par defaut ou apres ECHAP
+    if menu_selected or g.escape_selected:
+        gm.run()
+        if g is not None:
+            g.escape_selected = False
+        gs.escape_selected = False
 
-    pygame.display.update()
-    fpsClock.tick(FPS)
+    # Demarre l'ecran de jeu
+    if gm.start_selected:
+        g = Game(screen)
+        g.run()
+        gm.start_selected = False
+        gm.quit_select = False
+
+    # Demarre l'ecran de configuration
+    if gm.settings_selected:
+        gs.run()
+        gm.settings_selected = False
+
+    # Ferme la fenetre si Quit est selectionnee
+    if gm.quit_select is True:
+        mainloop = False
+
+    pygame.display.flip()
